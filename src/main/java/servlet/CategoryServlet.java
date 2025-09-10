@@ -13,6 +13,7 @@ import java.io.IOException;
 
 @WebServlet({"/category/create", "/category/update", "/category/delete", "/category/view"})
 public class CategoryServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     private CategoryDAO dao = new CategoryDAO();
 
     @Override
@@ -28,7 +29,7 @@ public class CategoryServlet extends HttpServlet {
         Category cat = new Category();
         cat.setCateName(req.getParameter("cateName"));
         cat.setIcons(req.getParameter("icons"));
-        cat.setUser(currentUser); // Gán user hiện tại làm owner
+        cat.setUser(currentUser); 
 
         if (path.equals("/category/create")) {
             dao.create(cat);

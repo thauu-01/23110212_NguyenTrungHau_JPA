@@ -12,11 +12,12 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     private UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/login.jsp").forward(req, resp); // Hiển thị form login
+        req.getRequestDispatcher("/login.jsp").forward(req, resp); 
     }
 
     @Override

@@ -38,7 +38,7 @@ public class CategoryDAO {
     public void delete(int id, User currentUser) {
         EntityManager em = JPAUtil.getEntityManager();
         Category cat = em.find(Category.class, id);
-        if (cat != null && cat.getUser().getId() == currentUser.getId()) {  // Chỉ xóa của chính mình
+        if (cat != null && cat.getUser().getId() == currentUser.getId()) {  
             em.getTransaction().begin();
             try {
                 em.remove(cat);

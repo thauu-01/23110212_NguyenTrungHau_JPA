@@ -13,11 +13,12 @@ import java.util.List;
 
 @WebServlet({"/user/home", "/manager/home", "/admin/home"})
 public class HomeServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     private CategoryDAO dao = new CategoryDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false); // Không tạo session mới
+        HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             resp.sendRedirect("/login");
             return;
@@ -27,12 +28,12 @@ public class HomeServlet extends HttpServlet {
         List<entity.Category> categories;
         String jsp;
         switch (user.getRoleid()) {
-            case 1: // User: Hiển thị tất cả category
-            case 3: // Admin: Hiển thị tất cả category
+            case 1: 
+            case 3: 
                 categories = dao.findAll();
                 jsp = (user.getRoleid() == 1) ? "/user-home.jsp" : "/admin-home.jsp";
                 break;
-            case 2: // Manager: Chỉ category của chính mình
+            case 2: 
                 categories = dao.findByUserId(user.getId());
                 jsp = "/manager-home.jsp";
                 break;
