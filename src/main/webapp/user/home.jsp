@@ -5,122 +5,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý danh mục - User Home</title>
-    <!-- Bootstrap 5 CDN -->
+    <title>Quản lý danh mục</title>
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #f8f9fa; }
         .header { background-color: #007bff; color: white; padding: 15px; border-radius: 5px 5px 0 0; }
         .search-box { background-color: #e9ecef; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
         .table { font-size: 14px; }
-        .add-form { background-color: #e3f2fd; padding: 20px; border-radius: 5px; margin-top: 20px; }
         .btn-primary { background-color: #007bff; border-color: #007bff; }
         .btn-primary:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="header text-center">Giao diện quản lý danh mục</h2>
-                
-                <!-- Hộp tìm kiếm -->
-                <div class="search-box">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm danh mục..." onkeyup="searchTable()">
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-primary" onclick="searchTable()">Tìm kiếm danh mục</button>
-                        </div>
-                        <div class="col-md-3 text-end">
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">Thêm danh mục</button>
-                        </div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="header text-center">Giao diện quản lý danh mục</h2>
+
+            <!-- Hộp tìm kiếm -->
+            <div class="search-box mt-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="searchInput"
+                               placeholder="Tìm kiếm danh mục..." onkeyup="searchTable()">
                     </div>
-                </div>
-
-                <!-- Bảng danh sách (hiển thị tất cả category cho user) -->
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="categoryTable">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên danh mục</th>
-                                <th>Icon</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="cat" items="${categories}">
-                                <tr>
-                                    <td>${cat.cateId}</td>
-                                    <td>${cat.cateName}</td>
-                                    <td>
-                                        <img src="${cat.icons}" alt="Icon" style="width: 50px; height: 50px;" onerror="this.src='default-icon.png'">
-                                    </td>
-                                    <td>
-                                        <a href="/category/view?id=${cat.cateId}" class="btn btn-sm btn-info">Xem</a>
-                                        <a href="/category/delete?id=${cat.cateId}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Modal Form Thêm danh mục -->
-                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header bg-primary text-white">
-                                <h5 class="modal-title" id="addModalLabel">Thêm danh mục</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <form method="post" action="/category/create">
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="cateName" class="form-label">Tên danh mục</label>
-                                        <input type="text" class="form-control" id="cateName" name="cateName" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="icons" class="form-label">Icon</label>
-                                        <input type="text" class="form-control" id="icons" name="icons" placeholder="URL icon (ví dụ: icon1.png)">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary w-100" onclick="searchTable()">Tìm kiếm</button>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addModal">Thêm danh mục</button>
                     </div>
                 </div>
             </div>
+
+            <!-- Bảng danh mục -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="categoryTable">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên danh mục</th>
+                        <th>Icon</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="cat" items="${categories}">
+                        <tr>
+                            <td>${cat.cateId}</td>
+                            <td>${cat.cateName}</td>
+                            <td class="text-center">
+                                <!-- Đường dẫn ảnh đảm bảo đúng contextPath -->
+                                <img src="${pageContext.request.contextPath}/resources/images/${cat.icons}"
+                                     alt="Icon"
+                                     style="width:50px; height:50px; object-fit:contain; border:1px solid #ccc; border-radius:5px;"
+                                     onerror="this.src='${pageContext.request.contextPath}/resources/images/default-icon.png'">
+                            </td>
+                            <td class="text-center">
+                                <a href="${pageContext.request.contextPath}/category/view?id=${cat.cateId}"
+                                   class="btn btn-sm btn-info">Xem</a>
+                                <a href="${pageContext.request.contextPath}/category/delete?id=${cat.cateId}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Bạn có chắc muốn xóa danh mục này?')">Xóa</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal Thêm danh mục -->
+            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="addModalLabel">Thêm danh mục</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form method="post" action="${pageContext.request.contextPath}/category/create">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="cateName" class="form-label">Tên danh mục</label>
+                                    <input type="text" class="form-control" id="cateName" name="cateName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="icons" class="form-label">Icon</label>
+                                    <input type="text" class="form-control" id="icons" name="icons"
+                                           placeholder="VD: icon1.png hoặc icon2.png" required>
+                                    <div class="form-text">
+                                        Chỉ nhập tên file. Ảnh phải được lưu sẵn trong thư mục
+                                        <b>resources/images</b>.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
 
-    <!-- Script tìm kiếm -->
-    <script>
-        function searchTable() {
-            var input = document.getElementById("searchInput");
-            var filter = input.value.toLowerCase();
-            var table = document.getElementById("categoryTable");
-            var tr = table.getElementsByTagName("tr");
-            for (var i = 1; i < tr.length; i++) {
-                var td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    var txtValue = td.textContent || td.innerText;
-                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
+<!-- Script tìm kiếm -->
+<script>
+    function searchTable() {
+        var input = document.getElementById("searchInput").value.toLowerCase();
+        var rows = document.querySelectorAll("#categoryTable tbody tr");
+
+        rows.forEach(row => {
+            let cell = row.getElementsByTagName("td")[1];
+            if (cell) {
+                let text = cell.textContent.toLowerCase();
+                row.style.display = text.includes(input) ? "" : "none";
             }
-        }
-    </script>
+        });
+    }
+</script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

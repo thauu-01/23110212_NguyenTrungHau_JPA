@@ -31,10 +31,10 @@
                             <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm danh mục..." onkeyup="searchTable()">
                         </div>
                         <div class="col-md-3">
-                            <button class="btn btn-primary" onclick="searchTable()">Tìm kiếm danh mục</button>
+                            <button class="btn btn-primary w-100" onclick="searchTable()">Tìm kiếm danh mục</button>
                         </div>
                         <div class="col-md-3 text-end">
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">Thêm danh mục</button>
+                            <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addModal">Thêm danh mục</button>
                         </div>
                     </div>
                 </div>
@@ -56,11 +56,19 @@
                                     <td>${cat.cateId}</td>
                                     <td>${cat.cateName}</td>
                                     <td>
-                                        <img src="${cat.icons}" alt="Icon" style="width: 50px; height: 50px;" onerror="this.src='default-icon.png'"> <!-- Thay default-icon.png nếu có -->
+                                        <!-- Đường dẫn ảnh chuẩn: /resources/images/tên-file -->
+                                        <img src="${pageContext.request.contextPath}/resources/images/${cat.icons}" 
+                                             alt="Icon" 
+                                             style="width: 50px; height: 50px;" 
+                                             onerror="this.src='${pageContext.request.contextPath}/resources/images/default-icon.png'">
                                     </td>
                                     <td>
-                                        <a href="/category/view?id=${cat.cateId}" class="btn btn-sm btn-info">Xem</a>
-                                        <a href="/category/delete?id=${cat.cateId}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                                        <!-- Dùng contextPath để tránh lỗi 404 -->
+                                        <a href="${pageContext.request.contextPath}/category/view?id=${cat.cateId}" 
+                                           class="btn btn-sm btn-info">Xem</a>
+                                        <a href="${pageContext.request.contextPath}/category/delete?id=${cat.cateId}" 
+                                           class="btn btn-sm btn-danger" 
+                                           onclick="return confirm('Bạn có chắc muốn xóa danh mục này?')">Xóa</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -76,7 +84,7 @@
                                 <h5 class="modal-title" id="addModalLabel">Thêm danh mục</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
-                            <form method="post" action="/category/create">
+                            <form method="post" action="${pageContext.request.contextPath}/category/create">
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="cateName" class="form-label">Tên danh mục</label>
@@ -84,12 +92,16 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="icons" class="form-label">Icon</label>
-                                        <input type="text" class="form-control" id="icons" name="icons" placeholder="URL icon (ví dụ: icon1.png)">
+                                        <input type="text" class="form-control" id="icons" name="icons" 
+                                               placeholder="VD: icon1.jpg hoặc icon2.jpg" required>
+                                        <div class="form-text">
+                                            Nhập tên file icon, ảnh phải nằm trong thư mục <b>resources/images</b>.
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Thêm mới</button>
                                 </div>
                             </form>
                         </div>
@@ -102,21 +114,16 @@
     <!-- Script tìm kiếm -->
     <script>
         function searchTable() {
-            var input = document.getElementById("searchInput");
-            var filter = input.value.toLowerCase();
-            var table = document.getElementById("categoryTable");
-            var tr = table.getElementsByTagName("tr");
-            for (var i = 1; i < tr.length; i++) {
-                var td = tr[i].getElementsByTagName("td")[1]; // Tìm theo cột Tên danh mục
-                if (td) {
-                    var txtValue = td.textContent || td.innerText;
-                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+            var input = document.getElementById("searchInput").value.toLowerCase();
+            var rows = document.querySelectorAll("#categoryTable tbody tr");
+
+            rows.forEach(row => {
+                let cell = row.getElementsByTagName("td")[1];
+                if (cell) {
+                    let text = cell.textContent.toLowerCase();
+                    row.style.display = text.includes(input) ? "" : "none";
                 }
-            }
+            });
         }
     </script>
 

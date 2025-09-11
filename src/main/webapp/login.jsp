@@ -52,22 +52,28 @@
 <body>
     <div class="login-container">
         <h2 class="text-center mb-4">Đăng Nhập Vào Hệ Thống</h2>
-        <form action="/login" method="post">
+        
+        <!-- Quan trọng: thêm contextPath để không bị lỗi 404 -->
+        <form action="${pageContext.request.contextPath}/login" method="post">
             <c:if test="${not empty error}">
                 <div class="error">${error}</div>
             </c:if>
+            
             <div class="form-group">
                 <label for="username"><i class="fas fa-user"></i> Tài khoản</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Tài khoản" required>
             </div>
+            
             <div class="form-group">
                 <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required>
             </div>
+            
             <div class="form-check mb-3">
                 <input type="checkbox" class="form-check-input" name="remember" id="remember">
                 <label class="form-check-label" for="remember">Nhớ mật khẩu</label>
             </div>
+            
             <button type="submit" class="btn btn-primary">Đăng nhập</button>
         </form>
     </div>
