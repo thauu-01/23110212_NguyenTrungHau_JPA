@@ -26,6 +26,27 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
+        /* ===== Nút đăng xuất cố định góc dưới bên phải ===== */
+        .logout-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 9999;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -122,6 +143,9 @@
     </div>
 </div>
 
+<!-- ===== Nút đăng xuất góc dưới bên phải ===== -->
+<a href="${pageContext.request.contextPath}/logout" class="logout-btn">Đăng xuất</a>
+
 <!-- Script tìm kiếm -->
 <script>
     function searchTable() {
@@ -133,11 +157,7 @@
             var td = tr[i].getElementsByTagName("td")[1];
             if (td) {
                 var txtValue = td.textContent || td.innerText;
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
+                tr[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
             }
         }
     }

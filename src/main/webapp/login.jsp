@@ -53,7 +53,7 @@
     <div class="login-container">
         <h2 class="text-center mb-4">Đăng Nhập Vào Hệ Thống</h2>
         
-        <!-- Quan trọng: thêm contextPath để không bị lỗi 404 -->
+        <!-- Form login, action luôn trỏ về servlet /login -->
         <form action="${pageContext.request.contextPath}/login" method="post">
             <c:if test="${not empty error}">
                 <div class="error">${error}</div>

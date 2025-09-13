@@ -1,39 +1,118 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-    <title>View Category</title>
+    <meta charset="UTF-8">
+    <title>Chi tiết Danh Mục</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-container { max-width: 400px; padding: 20px; border: 1px solid #ccc; }
-        .form-container input[type=text] { width: 100%; padding: 5px; }
-        .form-container input[type=submit] { padding: 8px 15px; background: #007bff; color: white; border: none; cursor: pointer; }
-        .form-container input[type=submit]:hover { background: #0056b3; }
-        .back-link { display: inline-block; margin-top: 10px; text-decoration: none; color: #007bff; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .detail p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        .detail img {
+            display: block;
+            margin: 10px auto;
+            width: 80px;
+            height: 80px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type=text] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type=submit] {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background: #0056b3;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h1>Chi tiết Category</h1>
-    <div class="form-container">
+<div class="container">
+    <h1>Chi tiết Danh Mục</h1>
+
+    <!-- Hiển thị thông tin danh mục -->
+    <div class="detail">
         <p><strong>ID:</strong> ${category.cateId}</p>
-        <p><strong>Name:</strong> ${category.cateName}</p>
-        <p><strong>Icon:</strong> ${category.icons}</p>
-
-        <h2>Cập nhật Category</h2>
-        <!-- Luôn thêm contextPath để servlet nhận đúng đường dẫn -->
-        <form method="post" action="${pageContext.request.contextPath}/category/update">
-            <input type="hidden" name="id" value="${category.cateId}" />
-            <div>
-                <label>Name:</label><br/>
-                <input type="text" name="cateName" value="${category.cateName}" required />
-            </div><br/>
-            <div>
-                <label>Icon:</label><br/>
-                <input type="text" name="icons" value="${category.icons}" required />
-            </div><br/>
-            <input type="submit" value="Update" />
-        </form>
-
-        <a class="back-link" href="${pageContext.request.contextPath}/category/list">← Back to list</a>
+        <p><strong>Tên danh mục:</strong> ${category.cateName}</p>
+        <p><strong>Icon:</strong></p>
+        <img src="${pageContext.request.contextPath}/resources/images/${category.icons}" 
+             alt="Icon"
+             onerror="this.src='${pageContext.request.contextPath}/resources/images/default-icon.png'">
     </div>
+
+    <!-- Form cập nhật danh mục -->
+    <h2>Cập nhật Danh Mục</h2>
+    <form method="post" action="${pageContext.request.contextPath}/category/update">
+        <input type="hidden" name="id" value="${category.cateId}" />
+        
+        <label for="cateName">Tên danh mục:</label>
+        <input type="text" id="cateName" name="cateName" value="${category.cateName}" required />
+
+        <label for="icons">Icon (tên file):</label>
+        <input type="text" id="icons" name="icons" value="${category.icons}" required />
+        
+        <input type="submit" value="Cập nhật" />
+    </form>
+
+    <!-- Nút quay về danh sách -->
+    <c:choose>
+        <c:when test="${sessionScope.user.roleid == 1}">
+            <a class="back-link" href="${pageContext.request.contextPath}/user/home">← Back to list</a>
+        </c:when>
+        <c:when test="${sessionScope.user.roleid == 2}">
+            <a class="back-link" href="${pageContext.request.contextPath}/manager/home">← Back to list</a>
+        </c:when>
+        <c:otherwise>
+            <a class="back-link" href="${pageContext.request.contextPath}/admin/home">← Back to list</a>
+        </c:otherwise>
+    </c:choose>
+</div>
 </body>
 </html>
