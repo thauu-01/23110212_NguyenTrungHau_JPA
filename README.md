@@ -13,3 +13,8 @@ Bài tập 05: Viết bằng JPA (tận dụng từ bài tập 04 để làm)
 
     - Thực hiện cấu hình Sitemesh Decorator 3 với Template Bootstrap.
     - Làm chức năng profile để update: fullname, phone, images (có sử dụng upload file bằng multipart)
+
+
+Tên: Nguyễn Trung Hậu
+
+MSSV: 23110212
