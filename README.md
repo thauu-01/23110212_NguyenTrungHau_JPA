@@ -1,5 +1,7 @@
 # 23110212_NguyenTrungHau_JPA
 
+BÀI TẬP CÁ NHÂN LẬP TRÌNH WEB
+
 Bài tập 04: Viết bằng JPA
 
     - Thực hiện trên database có 02 bản: Users và Category, Một user có nhiều category.
